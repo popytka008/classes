@@ -1,7 +1,7 @@
 <?php  require_once("classBase.php"); ?>
 
 <?php
-/* <!--  базовый класс элементов формы  --> */
+/* <!--  класс ТЕКСТОВОЕ ПОЛЕ <input type="text"> формы  --> */
 class TextField extends Control {
     // личные свойства текстового поля
     protected $value = "";
@@ -42,7 +42,7 @@ class TextField extends Control {
 
 
 <?php
-/* <!--  базовый класс элементов формы  --> */
+/* <!--  класс ПОЛЕ ЗАДАНИЯ ПАРОЛЯ <input type="password"> формы  --> */
 class PwdField extends TextField {
     // личные свойства поля пароля
 

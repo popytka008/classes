@@ -26,6 +26,8 @@ abstract class Primitive {
     
     const YES = true;
     const NO = false;
+    const NL = "nl";
+    const PLAIN = "plain";
 
     public function getID() { return $this->id; }
     public function getStyle() { return $this->css; }
@@ -41,6 +43,9 @@ abstract class Primitive {
     // метод вывода
     abstract public function write();
     public function writeln() { return $this->write().nl(); }
+    public function toString($key = self::NL) {
+      return ($key === self::NL) ?$this->writeln() :$this->write() ; //
+    }
 }
 ?>
 
