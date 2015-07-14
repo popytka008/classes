@@ -41,6 +41,7 @@ class Textarea extends Control {
 
         return ($strout . " >$this->content</textarea>");
     }
+    public function writeln() { return $this->write() . "\n"; }
     
     static public function createTextarea($name, $cols = "35", $rows = "5") {
         $tmp = new TextArea($name);

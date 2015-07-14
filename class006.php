@@ -1,6 +1,7 @@
 <?php  require_once("classBase.php"); ?>
 <?php  require_once("classTextarea.php"); ?>
 <?php  require_once("classHidden.php"); ?>
+<?php  require_once("classForm.php"); ?>
 <?php
 $content=<<<CONTENT
 В Минобороны России считают провокацией испытание новой ядерной бомбы американскими коллегами, передает РИА «Новости».

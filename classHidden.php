@@ -22,6 +22,7 @@ class Hidden extends Control {
 
         return ($strout . " />");
     }
+    public function writeln() { return $this->write() . "\n"; }
     
     static public function createHidden($name, $value = "Какое-то скрытое значение для работы"){
         $tmp = new Hidden($name, $value);
