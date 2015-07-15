@@ -43,7 +43,7 @@ abstract class Primitive {
     // метод вывода
     abstract public function write();
     public function writeln() { return $this->write().nl(); }
-    public function toString($key = self::NL) {
+    public function toString($key = self::PLAIN) {
       return ($key === self::NL) ?$this->writeln() :$this->write() ; //
     }
 }

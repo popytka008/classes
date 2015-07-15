@@ -1,9 +1,12 @@
 <?php  require_once("classBase.php"); ?>
 <?php
-/* <!--  блочный элемент DIV P --> */
-class Element extends Control {
+/* <!--   элемент A ссылка --> */
+class Link extends Control {
   // личные свойства поля загрузки файлов
-  protected $tag = "div";
+  protected $tag = "a";
+  protected $href = "";
+  protected $title = "пояснение ссылки";
+  
   protected $elements = array();
 
   public function __construct ($name = null, $owner = null) {
@@ -11,11 +14,14 @@ class Element extends Control {
   }
 
   // get | set
-  public function getTag() { return $this->tag; }
+  public function getHref() { return $this->href; }
+  public function getTitle() { return $this->title; }
   public function getElements() { return $this->elements; }
 
-  public function setTag($tag) { $this->tag = $tag; }
+  public function addHref($href) { $this->href = $href; }
+  public function addTitle($title) { $this->title = $title; }  
   public function setElements($elements) { $this->elements = $elements; }  
+  
   public function addElement($item) { $this->elements[] = $item; }
   
   public function addText($text) { 
@@ -28,7 +34,9 @@ class Element extends Control {
   public function write() {
     $tag = "<{$this->tag}";
     $tag .=($this->id != "") ?" id='$this->id'" :"";
+    $tag .=($this->href != "") ?" href='$this->href'" :"";
     $tag .=($this->name != "") ?" name='$this->name'" :"";
+    $tag .=($this->title != "") ?" title='$this->title'" :"";
     $tag .=($this->css != "") ?" style='$this->css'" :"";
     $tag .=($this->cls != "") ?" class='$this->cls'" :"";
     $tag .= ">\n";
@@ -40,9 +48,9 @@ class Element extends Control {
   
   public function writeln() { return $this->write() . "\n"; }
     
-  static public function createElement($name, $tag = "div", $elems = array()){
-    $tmp = new Element($name);
-    $tmp->tag = $tag;
+  static public function createLink($name = null, $href = null, $elems = array()){
+    $tmp = new Link($name);
+    $tmp->href = $href;
     $tmp->setElements($elems);
     return $tmp;
   }

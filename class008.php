@@ -5,9 +5,6 @@
 <?php  require_once("classElement.php"); ?>
 <?php  require_once("classImageButton.php"); ?>
 <?php  require_once("classTextNode.php"); ?>
-<?php  require_once("classList.php"); ?>
-<?php  require_once("classLink.php"); ?>
-<?php  require_once("classImage.php"); ?>
 <?php
 $t =<<<GIT
 Это пособие разработано и выпущено клубом самодеятельной песни "ПОИСК"
@@ -34,39 +31,6 @@ $elem->addElement($p);
 $txt = TextNode::createTextNode(null,$t);
 $p->addElement($txt);
 echo $elem->writeln();
-?>
-<?php
-$items = array();
-for ($i = 0; $i<10; $i++){
-    $items[] =  
-      ListItem::createListItem(
-        "item_".$i, 
-        array( 
-          Link::createLink(
-            "MyFirstLink", 
-            "http://test/class/class00".$i.".php", 
-            array(
-              TextNode::createTextNode(
-                null, 
-                "Давай по ссылке на class00".$i.".php"
-              )   //creaTextNode
-            )     //array
-          )       //createLink
-        )         //array
-      );          //createListItem
-}
-$list = OrderList::createOrderList("MyList", $items);
-echo $list->toString();
-$link = Link::createLink("MyFirstLink", "http://test/class/class004.php", array(TextNode::createTextNode(null, "Давай по ссылке на class004.php")));
-
-//$link = Link::createLink("MyFirstLink");
-//print_r($link);
-echo $link->toString();
-echo np();
-//$name, $src = "", $alt = "", $title = ""
-$img = Image::createImage("MyImageHere", "../mdn/1/images/image1.jpg", "Нет рисунка?", "Какой хароший рисунок");
-//print_r($img);
-echo $img->toString();
 ?>
 <!--
 <script language="javascript">
