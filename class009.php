@@ -1,18 +1,4 @@
-<?php  require_once("classBase.php"); ?>
-<?php  require_once("classTextarea.php"); ?>
-<?php  require_once("classHidden.php"); ?>
-<?php  require_once("classForm.php"); ?>
-<?php  require_once("classElement.php"); ?>
-<?php  require_once("classImageButton.php"); ?>
-<?php  require_once("classTextNode.php"); ?>
-<?php  require_once("classList.php"); ?>
-<?php  require_once("classLink.php"); ?>
-<?php  require_once("classImage.php"); ?>
-
-<?php  require_once("classTable.php");  ?>
-<?php  require_once("classTableRow.php");  ?>
-<?php  require_once("classTableData.php");  ?>
-<?php  require_once("classTableDataHeader.php");  ?>
+<?php  require_once("include.php"); ?>
 <?php
 /*
 создать таблицу
@@ -48,15 +34,15 @@ $tr->addCol($th);
 $tbl->addRow($tr);
 
 for ($i = 0; $i < $x; $i++){                  // к-во строк
-  $tr  = TableRow::createTableRow();  
+  $tr  = TableRow::createTableRow();
   for ($j = 0; $j < 3/*$tr->getLength()*/; $j++){  // к-во столбцов
-    $txt = TextNode::createTextNode(null, "ячейка:" . ($i+1) . "_" . ($j+1));    
+    $txt = TextNode::createTextNode(null, "ячейка:" . ($i+1) . "_" . ($j+1));
     $td = TableData::createTableData("td_" . ($i+1) . "_" . ($j+1), array($txt));
     //print_r($td);
     $tr->addCol($td);
   }
 if ($i%2) { $tr->SetClass("even"); } else { $tr->SetClass("noteven"); }
-  $tbl->addRow($tr);  
+  $tbl->addRow($tr);
 }
 //print_r($tbl);
 

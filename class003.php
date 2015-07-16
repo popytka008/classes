@@ -1,9 +1,4 @@
-<?php  require_once("classBase.php"); ?>
-<?php  require_once("classRadio.php"); ?>
-<?php  require_once("classCheckbox.php"); ?>
-<?php  require_once("classFileUploadField.php"); ?>
-
-
+<?php  require_once("include.php"); ?>
 <?php
 /**
  * Created by PhpStorm.
@@ -36,7 +31,8 @@ $c->setPos(Checkbox::RIGHT);
 $checkbox[] = $c =  new Checkbox("MyCheckbox");
 $c->setData("3", "3. Екатерина II Великая");
 $c->setPos(Checkbox::LEFT);
-writeControls($checkbox);
+//print_r($c);
+echo writeControls($checkbox);
 
 echo np();
 $file = new FileUploadField("MyFile");

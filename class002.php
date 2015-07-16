@@ -1,6 +1,4 @@
-<?php  require_once("classBase.php"); ?>
-<?php  require_once("classTextField.php"); ?>
-<?php  require_once("classButtons.php"); ?>
+<?php  require_once("include.php"); ?>
 
 
 <?php
@@ -41,7 +39,7 @@ $CDATA ="
 <SCRIPT>
 function a() {
     var txt = document.getElementById('".$text->getID()."');
-    txt.value='OOOOOOOOOOOO';    
+    txt.value='OOOOOOOOOOOO';
 }
 </SCRIPT>
 ";

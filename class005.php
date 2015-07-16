@@ -1,6 +1,4 @@
-<?php  require_once("classBase.php"); ?>
-<?php  require_once("classSelect.php"); ?>
-<?php  require_once("classButtons.php"); ?>
+<?php  require_once("include.php"); ?>
 
 <html>
 <body>
@@ -13,13 +11,13 @@
       //print_r ($select);
       echo $select->write();
     ?>
-    <?php 
+    <?php
       // проверка восстановления состояния в форме для элемента select
       $reset = new Reset("MyButton");
       $reset->setValue("Нажми меня!");
       echo $reset->toString();
     ?>
-    <?php 
+    <?php
     // проверка выбора итэма по имени в элементе select
       $button = new Button("MyButton");
       $button->setValue("Выбери №0!");
@@ -30,13 +28,13 @@
   </form>
   <div>
     <form name = "f2">
-      <?php 
+      <?php
         $options = array();
-        // назначение вариантов 
+        // назначение вариантов
         for($i = 1; $i<10; $i++) {
-          if ($i == 6) { 
-            $options[] = Option::createOption($i, "Это значение $i", Primitive::NO, Primitive::YES);  
-            continue; 
+          if ($i == 6) {
+            $options[] = Option::createOption($i, "Это значение $i", Primitive::NO, Primitive::YES);
+            continue;
           }
           $options[] = Option::createOption($i, "Это значение $i");
         }
@@ -45,37 +43,37 @@
         //print_r ($select);
         echo $select->write();
       ?>
-      <?php 
+      <?php
         // проверка восстановления состояния в форме для элемента select
         $reset = new Reset("MyButton");
         $reset->setValue("Нажми меня!");
         echo $reset->toString();
       ?>
-      <?php 
+      <?php
       // проверка выбора итэма по имени в элементе select
         $button = new Button("MyButton");
         $button->setValue("Выбери №0!");
         $button->onClick .= "'alert(document.forms[0][0][0].value);'";
         echo $button->toString();
       ?>
-    
+
     </form>
   </div>
 
-  <script language="javascript" type="text/javascript" > 
+  <script language="javascript" type="text/javascript" >
 var select = document.querySelector("select");
 select.onchange = function() {
-  alert('value = '+select.value +'\n' + 'index = '+select.selectedIndex + '\n' 
-  + 'text = '+select.options[select.selectedIndex].text + '\n' 
+  alert('value = '+select.value +'\n' + 'index = '+select.selectedIndex + '\n'
+  + 'text = '+select.options[select.selectedIndex].text + '\n'
   + 'defaultSelected = '+select.options[select.selectedIndex].defaultSelected);
                 };
 var one = document.getElementById('MySelectNew');
-         
+
 one.onchange = function() {
-    alert('value = '+one.value +'\n' + 'index = '+one.selectedIndex + '\n' 
-    + 'text = '+one.options[one.selectedIndex].text + '\n' 
+    alert('value = '+one.value +'\n' + 'index = '+one.selectedIndex + '\n'
+    + 'text = '+one.options[one.selectedIndex].text + '\n'
     + 'defaultSelected = '+one.options[one.selectedIndex].defaultSelected);
-  }; 
+  };
   </script>
 <body>
 </html>

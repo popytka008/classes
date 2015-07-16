@@ -1,10 +1,4 @@
-<?php  require_once("classBase.php"); ?>
-<?php  require_once("classTextarea.php"); ?>
-<?php  require_once("classHidden.php"); ?>
-<?php  require_once("classForm.php"); ?>
-<?php  require_once("classElement.php"); ?>
-<?php  require_once("classImageButton.php"); ?>
-<?php  require_once("classTextNode.php"); ?>
+<?php  require_once("include.php"); ?>
 <?php
 $t =<<<GIT
 Это пособие разработано и выпущено клубом самодеятельной песни "ПОИСК"

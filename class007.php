@@ -1,13 +1,4 @@
-<?php  require_once("classBase.php"); ?>
-<?php  require_once("classTextarea.php"); ?>
-<?php  require_once("classHidden.php"); ?>
-<?php  require_once("classForm.php"); ?>
-<?php  require_once("classElement.php"); ?>
-<?php  require_once("classImageButton.php"); ?>
-<?php  require_once("classTextNode.php"); ?>
-<?php  require_once("classList.php"); ?>
-<?php  require_once("classLink.php"); ?>
-<?php  require_once("classImage.php"); ?>
+<?php  require_once("include.php"); ?>
 <?php
 $t =<<<GIT
 Это пособие разработано и выпущено клубом самодеятельной песни "ПОИСК"
@@ -38,16 +29,16 @@ echo $elem->writeln();
 <?php
 $items = array();
 for ($i = 0; $i<10; $i++){
-    $items[] =  
+    $items[] =
       ListItem::createListItem(
-        "item_".$i, 
-        array( 
+        "item_".$i,
+        array(
           Link::createLink(
-            "MyFirstLink", 
-            "http://test/class/class00".$i.".php", 
+            "MyFirstLink",
+            "http://test/class/class00".$i.".php",
             array(
               TextNode::createTextNode(
-                null, 
+                null,
                 "Давай по ссылке на class00".$i.".php"
               )   //creaTextNode
             )     //array
