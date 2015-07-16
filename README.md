@@ -29,3 +29,4 @@ table td th tr caption
 сделано .проверить...
 {talbe + caption } { tr } { td } { th }
 
+:)
