@@ -21,3 +21,11 @@
 рисунки (+) и самостоятельные кнопки (+).
 
 Что же дальше?????????
+
+4. Дальше <table/> и тэги в контейнере:
+td th tr caption col colgroup tbody tfoot thead
+фильтр:
+table td th tr caption
+сделано .проверить...
+{talbe + caption } { tr } { td } { th }
+
