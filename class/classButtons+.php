@@ -1,47 +1,36 @@
-<?php  require_once("classBase.php"); ?>
+<?php  require_once($inc."classBase.php"); ?>
 <?php
 /* <!--  кнопка SUBMIT  --> */
-class Submit extends Element {
-  // личные свойства текстового поля
-  protected $value = "";
-  protected $type = "";
+class Submit extends Control {
+    // личные свойства текстового поля
+    protected $value = "здесь был текст";
 
-  public function __construct ($name = null, $owner = null) {
-    parent::__construct($name, $owner);
-    $this->tag = "input";
-    $this->type = "submit";
-    $this->value = "Отослать данные";
-    $this->doubleTag = Cons::NO;
-  }
+    public function __construct ($name = "MyName", $owner = null) {
+        parent::__construct($name, $owner);
 
-  // get | set
-  public function getValue() { return $this->value; }
-  public function getType() { return $this->type; }
+        $this->type = "submit";
+    }
 
-  public function setValue($value) { $this->value = $value; }
-  public function setType($type) { $this->type = $type; }
-  
-  // добавленные свойства
-  public function getProps() { return " type='$this->type' value='$this->value'"; }
-/*
-  public function write($strout="") {
-    $strout = "<input type='submit' name='$this->name' value='$this->value'";
-    $strout .= ($this->onFocus !== "onFocus=")? ' '.$this->onFocus : "";
-    $strout .= ($this->onBlur !== "onBlur=")? ' '.$this->onBlur : "";
-    $strout .= ($this->onSelect !== "onSelect=")? ' '.$this->onSelect : "";
-    $strout .= ($this->onChange !== "onChange=")? ' '.$this->onChange : "";
-    $strout .= ($this->onClick !== "onClick=")? ' '.$this->onClick : "";
+    // get | set
+    public function getValue() { return $this->value; }
 
-    return ($strout . " />");
-  }
-*/
+    public function setValue($value) { $this->value = $value; }
+
+    public function write($strout="") {
+        $strout = "<input type='submit' name='$this->name' value='$this->value'";
+        $strout .= ($this->onFocus !== "onFocus=")? ' '.$this->onFocus : "";
+        $strout .= ($this->onBlur !== "onBlur=")? ' '.$this->onBlur : "";
+        $strout .= ($this->onSelect !== "onSelect=")? ' '.$this->onSelect : "";
+        $strout .= ($this->onChange !== "onChange=")? ' '.$this->onChange : "";
+        $strout .= ($this->onClick !== "onClick=")? ' '.$this->onClick : "";
+
+        return ($strout . " />");
+    }
 }
-
 ?>
 
 <?php
 /* <!--  кнопка RESET  --> */
-/*
 class Reset extends Control {
     // личные свойства текстового поля
     protected $value = "Reset Form";
@@ -68,12 +57,10 @@ class Reset extends Control {
         return ($strout . " />");
     }
 }
-*/
 ?>
 
 <?php
 /* <!--  кнопка BUTTON  --> */
-/*
 class Button extends Control {
     // личные свойства текстового поля
     protected $value = "Button for js";
@@ -100,5 +87,4 @@ class Button extends Control {
         return ($strout . " />");
     }
 }
-*/
 ?>

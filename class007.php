@@ -35,7 +35,7 @@ for ($i = 0; $i<10; $i++){
         array(
           Link::createLink(
             "MyFirstLink",
-            "http://test/class/class00".$i.".php",
+            "class00".$i.".php",
             array(
               TextNode::createTextNode(
                 null,
