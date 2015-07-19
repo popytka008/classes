@@ -4,49 +4,49 @@ id, css, cls
 type, name
 -->
 <?php
-/* <!--  класс ТЕКСТОВЫЙ РЕГИОН <textarea></textarea> формы  --> */
-class Textarea extends Control {
-    // личные свойства текстового поля
-    protected $cols = "35";
-    protected $rows = "5";
+class Textarea extends Element {
+  // личные свойства текстового поля
+    protected $cols;
+    protected $rows;
     protected $wrap;
-    protected $content = "Вариант тескта в поле";
 
-    const OFF = "off";
-    const VIRT = "virtual";
-    const PHYS = "physical";
-
-    public function __construct ($name = "MyName", $owner = null) {
-        parent::__construct($name, $owner);
-        
-    }
-
-    // get | set
-    public function getSize() { return array($this->cols, $this->rows); }
-    public function getWrap() { return $this->wrap; }
-
-    public function setSize($cols, $rows) { $this->cols = $cols; $this->rows = $rows; }
-    public function setWrap($wrap = self::OFF) { $this->wrap = $wrap; }
+  public function __construct 
+    ($name = null, $owner = null, $cols = "35", $rows = "5" , 
+     $wrap = Cons::VIRT, $text = null) 
+  {
+    parent::__construct($name, $owner);
     
-    public function addContent($content) { $this->content = $content; }
-    public function Content() { return $this->content; }
-
-    public function write() {
-        $strout = "<textarea id='$this->id' name='$this->name' cols='$this->cols' rows='$this->rows'";
-
-        $strout .= ($this->onFocus !== "onFocus=")? ' '.$this->onFocus : "";
-        $strout .= ($this->onBlur !== "onBlur=")? ' '.$this->onBlur : "";
-        $strout .= ($this->onSelect !== "onSelect=")? ' '.$this->onSelect : "";
-        $strout .= ($this->onChange !== "onChange=")? ' '.$this->onChange : "";
-
-        return ($strout . " >$this->content</textarea>");
-    }
-    public function writeln() { return $this->write() . "\n"; }
+    $this->text = $text;
+    $this->cols = $cols;
+    $this->rows = $rows;
+    $this->wrap = $wrap;
     
-    static public function createTextarea($name, $cols = "35", $rows = "5") {
-        $tmp = new TextArea($name);
-        $tmp->setSize($cols, $rows);
-        return $tmp;
-    }
+    $this->tag = "textarea";
+  }
+
+  // get | set
+  public function getCols() { return $this->cols; }
+  public function getRows() { return $this->rows; }
+
+  public function setCols($cols) { $this->cols = $cols; }
+  public function setRows($rows) { $this->rows = $rows; }
+  public function setWrap($wrap = Cons::OFF) { $this->wrap = $wrap; }
+
+  // добавленные свойства
+  public function getProps() {
+    $props  = (($this->cols == "") ?"" : " cols='{$this->cols}'");
+    $props .= (($this->rows == "") ?"" : " rows='{$this->rows}'");
+    $props .= (($this->wrap == "") ?"" : " wrap='{$this->wrap}'");
+
+    return $props;
+  }
+
+  static public function createTextarea
+    ($name = null, $owner = null, $cols = "35", $rows = "5" , 
+     $wrap = Cons::VIRT, $text = null) 
+  {
+    $tmp = new InputImage($name, $owner, $cols, $rows, $wrap, $text);
+    return $tmp;
+  }
 }
 ?>

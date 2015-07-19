@@ -1,41 +1,37 @@
 <?php  require_once("classBase.php"); ?>
 <?php
 /* <!--  под-элемент table->tr->TD --> */
-class TableData extends Control {
+class TableData extends Element {
   // личные свойства поля загрузки файлов
-  protected $tag = "td";
   
   // в массиве - дерево любых элементов HTML
-  protected $elements = array();
+  protected $items;
 
-  public function __construct ($name = null, $owner = null) {
+  public function __construct ($name = null, $owner = null, $items = null) 
+  {
     parent::__construct($name, $owner);
+    $this->tag = "td";
+    $this->items = $items;
   }
 
   // get | set
-  public function getElements() { return $this->elements; }
+  public function getItems()  { return $this->items;  }
 
-  public function setElements($items) { $this->elements = $items; }  
-  public function addElement($item) { $this->elements[] = $item; }
+  public function setItems($items){ $this->items = $items;   }
+  public function addItem($item)  { $this->items[] = $item;  }
   
-  public function write() {
-    $tag = "<{$this->tag}";
-    $tag .=($this->id != "") ?" id='$this->id'" :"";
-    $tag .=($this->name != "") ?" name='$this->name'" :"";
-    $tag .=($this->css != "") ?" style='$this->css'" :"";
-    $tag .=($this->cls != "") ?" class='$this->cls'" :"";
-    $tag .= ">\n";
-    
-    $elements = writeControls($this->elements);
-    
-    return ($tag . $elements . "</{$this->tag}>");  
+  public function itemsOut() { 
+    return (($this->items !== null) ?(writeControls($this->items)) :"");
   }
   
-  public function writeln() { return $this->write() . "\n"; }
+    public function addText($text) { 
+    $this->items[] = new TextNode(null, null, $text);
+  }
     
-  static public function createTableData($name = null, $items = array()){
-    $tmp = new TableData($name);
-    $tmp->setElements($items);
+  static public function createTableData
+                        ($name = null, $owner = null, $items = null) 
+  {
+    $tmp = new TableData($name, $owner, $items);
     return $tmp;
   }
 }

@@ -1,53 +1,70 @@
 <?php  require_once("classBase.php"); ?>
 <?php
 /* <!--  класс элементов выбора select->OPTION --> */
-class Option extends Control {
+class Option extends Element {
   protected $value;
-  protected $text;
   protected $disabled;
   protected $defaultSelected;
   
-  public function __construct ($name = "MyName", $owner = null) {
+  public function __construct 
+                ($name = null, $owner = null, 
+                $text="some text", $value = "some value", 
+                $disabled = Cons::NO, $defaultSelected = Cons::NO) 
+  {
       parent::__construct($name, $owner);
-      $this->disabled = Primitive::NO;
-      $this->defaultSelected = Primitive::NO;
+      $this->text = $text;
+      $this->value = $value;
+      $this->disabled = $disabled;
+      $this->defaultSelected = $defaultSelected;
+      
+      $this->tag = "option";
   }
 
-  public function initOption
-  ($value, $text, $disabled = Primitive::NO, $defaultSelected= Primitive::NO) {
-    $this->value    = $value;
-    $this->text     = $text;
-    $this->disabled = $disabled;
-    $this->defaultSelected = $defaultSelected;
-    }
+  public function getValue() { return $this->value; }
+  public function getDisabled() { return $this->disabled; }
+  public function getDefaultSelected()  { return $this->defaultSelected;  }
   
-  public function write($strout="") {
-    $strout = "<option value='$this->value' ";
-    $strout .= ($this->defaultSelected === Primitive::YES)? " selected='true'" : "";
-    $strout .= ($this->disabled === Primitive::YES)? " disabled='true'" : "";
-    
-    return ($strout . ">$this->text</option>");
+  public function setValue($value) { $this->value = $value; }
+  public function setDisabled($disabled) { $this->disabled = $disabled; }
+  public function setDefaultSelected($defaultSelected){ $this->defaultSelected = $defaultSelected;   }
+
+  
+  public function getProps() {
+    $props  = (($this->value == "") ?"" : " value='{$this->value}'");
+    $props .= (($this->disabled === Cons::NO) ?"" : " disabled='{$this->disabled}'");
+    $props .= (($this->defaultSelected === Cons::NO) ?"" : " defaultSelected='{$this->defaultSelected}'");
+
+    return $props;
   }
 
-  static public function createOption($value, $text, $disabled = Primitive::NO, $defaultSelected = Primitive::NO) {
-    $tmp = new Option();
-    $tmp->initOption($value, $text, $disabled, $defaultSelected);
+  static public function createOption
+                ($name = null, $owner = null, 
+                $text="some text", $value = "some value", 
+                $disabled = Cons::NO, $defaultSelected = Cons::NO) 
+  {
+    $tmp = new Option($name, $owner, $text, $value, $disabled, $defaultSelected);
     return $tmp;
   }
 }
 ?>
- 
-<?php
+ <?php
 /* <!--  кнопка Select  --> */
-class Select extends Control {
+class Select extends Element {
   // личные свойства текстового поля
-  protected $multiple = Primitive::NO;     // множественность выбора
-  protected $options = array(); // массив-элементы выбора
-  protected $size = "3";   // количество отображаемые элементы
+  protected $multiple;// множественность выбора
+  protected $options; // массив-элементы выбора
+  protected $size;    // количество отображаемые элементы
 
-  public function __construct ($name = "MyName", $owner = null) {
+  public function __construct ($name = null, $owner = null, 
+                  $options = null, $size = "3", $multiple = Cons::NO) 
+  {
     parent::__construct($name, $owner);
     $this->name .= "[]";
+    $this->tag = "select";
+    
+    $this->multiple = $multiple;
+    $this->size = $size;
+    $this->options = $options;
   }
 
   // get | set
@@ -55,37 +72,27 @@ class Select extends Control {
   public function getSize() { return $this->size; } // значение поля size
 
   public function setOptions( $options) { $this->options = $options; }
-  public function setSize($size) { $this->size = $size; }
+  public function setSize($size = "") { $this->size = $size; }
   
-  public function doMultiple($value = Primitive::YES){ $this->multiple = $value; }
+  public function doMultiple($value = Cons::YES){ $this->multiple = $value; }
+  public function addOption( $option) { $this->options[] = $option; }
   
-  public function addOption($value, $text, $disabled = Primitive::NO, $defaultSelected = Primitive::NO) {
-    $option = Option::createOption($value, $text, $disabled, $defaultSelected);
-    $this->options[] = $option;
+  public function itemsOut() { 
+    return (($this->options !== null) ?(writeControls($this->options)) :"");
   }
 
-  public function write($strout="") {
-    $strout = "<select name='$this->name' ";
-    $strout = "<select id='$this->id' ";
-    $strout .= ($this->multiple === Primitive::YES)? " multiple='true' " : "";
+  // добавленные свойства
+  public function getProps() {
+    $props  = (($this->size == "") ?"" : " size='{$this->size}'");
+    $props .= (($this->multiple === Cons::NO) ?"" : " multiple='true'");
 
-    $strout .= ($this->onFocus !== "onFocus=")? ' '.$this->onFocus : "";
-    $strout .= ($this->onBlur !== "onBlur=")? ' '.$this->onBlur : "";
-    $strout .= ($this->onSelect !== "onSelect=")? ' '.$this->onSelect : "";
-    $strout .= ($this->onChange !== "onChange=")? ' '.$this->onChange : "";
-    $strout .= ($this->onClick !== "onClick=")? ' '.$this->onClick : "";
-    $strout .= " >" . nl() ;
-    
-    $strout .= writeControls($this->options);
-    
-    return $strout . "</select>" . np() ;
+    return $props;
   }
-  
-  static function createSelect($name, $size, $multiple, $options = array()) {
-    $tmp = new Select($name);
-    $tmp->setSize($size); 
-    $tmp->doMultiple($multiple);
-    $tmp->setOptions($options);
+
+  static function createSelect($name = null, $owner = null, 
+                  $options = null, $size = "3", $multiple = Cons::NO) 
+  {
+    $tmp = new Select($name, $owner, $options, $size, $multiple);    
     return $tmp;
   }
 }

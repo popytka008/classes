@@ -1,40 +1,31 @@
-<?php  require_once("classBase.php"); ?>
-
+<?php  require_once("classInput.php"); ?>
 <?php
 /* <!--  базовый класс элементов формы  --> */
-class FileUploadField extends Control {
-    // личные свойства поля загрузки файлов
-    protected $size;
-	protected $multiple = FileUploadField::SINGLE;
-	
-	const MULTY = "true";
-	const SINGLE= "false";
+class FileUploadField extends Input {
+  // личные свойства поля загрузки файлов
+  protected $size;
+  protected $multiple;
 
-	public function __construct ($name = "MyName", $owner = null) {
-        parent::__construct($name, $owner);
-		
-        $this->type = "file";
-        $this->size = "15";
-    }
+  public function __construct ($name = "MyName", $owner = null, $m = Cons::NO) {
+    parent::__construct($name, $owner, null);
+    $this->type = "file";
+    $this->multiple = $m;
+  }
 
-    // get | set
-    public function getSize() { return $this->size; }
-	public function getMultiple() { return $this->multiple; }
+  // get | set
+  public function getSize() { return $this->size; }
+  public function getMultiple() { return $this->multiple; }
 
-    public function setSize($size) { $this->size = $size; }
-    public function setMultiple($m = FileUploadField::SINGLE) { $this->multiple = $m; }
+  public function setSize($size) { $this->size = $size; }
+  public function setMultiple($m = Cons::YES) { $this->multiple = $m; }
 
-    public function write() {
-        $strout = "<input type='file' id='$this->id' name='$this->name' size='$this->size'  ";
-        $strout .= ($this->multiple !== FileUploadField::SINGLE)? " multiple='$this->multiple'" : "";
-		
-        $strout .= ($this->onFocus !== "onFocus=")? ' '.$this->onFocus : "";
-        $strout .= ($this->onBlur !== "onBlur=")? ' '.$this->onBlur : "";
-        $strout .= ($this->onSelect !== "onSelect=")? ' '.$this->onSelect : "";
-        $strout .= ($this->onChange !== "onChange=")? ' '.$this->onChange : "";
-
-        return ($strout . " />");
-    }
+  public function getProps() {
+    $props = parent::getProps();
+    
+    $props .=  ($this->size == "") ?"" : " size='{$this->size}'"; 
+    $props .=  ($this->multiple === Cons::NO)? "" :" multiple='true'";
+    return $props;    
+  }
 }
 ?>
 

@@ -1,43 +1,33 @@
 <?php  require_once("classBase.php"); ?>
 <?php
 /* <!--  под-элемент table->TR --> */
-class TableRow extends Control {
+class TableRow extends Element {
   // личные свойства поля загрузки файлов
-  protected $tag = "tr";
+  //protected $tag = "tr";
   
   // только td/th - элементы таблицы исключительно
-  protected $cols = array();  
+  protected $cols = null;
 
-  public function __construct ($name = null, $owner = null) {
+  public function __construct ($name = null, $owner = null, $cols = null) 
+  {
     parent::__construct($name, $owner);
+    $this->tag = "tr";
   }
 
   // get | set
   public function getCols() { return $this->cols; }
-  public function getLength() { return count($this->cols); }
-  
 
   public function setCols($items) { $this->cols = $items; }  
   public function addCol($item) { $this->cols[] = $item; }
   
-  public function write() {
-    $tag = "<{$this->tag}";
-    $tag .=($this->id != "") ?" id='$this->id'" :"";
-    $tag .=($this->name != "") ?" name='$this->name'" :"";
-    $tag .=($this->css != "") ?" style='$this->css'" :"";
-    $tag .=($this->cls != "") ?" class='$this->cls'" :"";
-    $tag .= ">\n";
-    
-    $cols = writeControls($this->cols);
-    
-    return ($tag . $cols . "</{$this->tag}>");  
+  public function itemsOut() { 
+    return (($this->cols !== null) ?(writeControls($this->cols)) :"");
   }
   
-  public function writeln() { return $this->write() . "\n"; }
-  
-  static public function createTableRow($name = null, $items = array()){
-    $tmp = new TableRow($name);
-    $tmp->setCols($items);
+  static public function createTableRow
+                        ($name = null, $owner = null, $cols = null) 
+  {
+    $tmp = new TableRow($name, $owner, $cols);
     return $tmp;
   }
 }

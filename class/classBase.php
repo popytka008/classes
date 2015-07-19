@@ -1,10 +1,12 @@
 <?php /* сервисные функции */  ?>
 <?php function nl() { return "<br />\n"; }                   ?>
-<?php function np() { return "\n<p />\n"; }                  ?>
+<?php function np() { return "<p />\n"; }                    ?>
 <?php 
-function writeControls($controls){
+function writeControls($controls, $wrap = Cons::WRAP){
   $strout = "";
-    foreach($controls as $control) $strout .= $control->writeln();
+    foreach($controls as $item) {
+      $strout .= $item->toString($wrap);
+    }
   return $strout;
 }
 ?>
@@ -14,6 +16,11 @@ final class Cons {
   const NO = false;
   const WRAP = "nl";
   const PLAIN = "plain";
+  //const LEFT = "l";
+	//const RIGHT = "r";
+  const OFF = "off";
+  const VIRT = "virtual";
+  const PHYS = "physical";
 }
 ?>
 <?php
@@ -118,45 +125,32 @@ abstract class Primitive {
   
   // функция класса для вывода (ВОЗМОЖНО ОШИБКА)
   static public function out($item, $doubleTag = Cons::YES) {
-    $atr = $item->getProps();
-
-    $atr .= ($item->getID() == "") ?"" : " id='{$item->getID()}'";
-    $atr .= ($item->getName() == "") ?"" : " id='{$item->getName()}'";
-    $atr .= ($item->getStyle() == "") ?"" : " style='{$item->getStyle()}'";
-    $atr .= ($item->getClass() == "") ?"" : " style='{$item->getClass()}'";
-
-    $atr .= ($item->onBlur == "") ?"" : " onBlur='{$item->onBlur}'";
-    $atr .= ($item->onChange == "") ?"" : " onChange='{$item->onChange}'";
-    $atr .= ($item->onFocus == "") ?"" : " onFocus='{$item->onFocus}'";
-    $atr .= ($item->onSelect == "") ?"" : " onSelect='{$item->onSelect}'";
-    $atr .= ($item->onClick == "") ?"" : " onClick='{$item->onClick}'";
-                      
-    if($doubleTag === Cons::YES)
-      return "<{$item->getTag()}{$atr}>" . $item->itemsOut() . "</{$item->getTag()}>\n";
-    else
-      return "<{$item->getTag()}{$atr} />\n";
+    return $item->toString(Cons::WRAP);
   }
 }
 ?>
 <?php /* ***** начальный (и абстрагированный) класс элементов HTML ****** */
 class Element extends Primitive {
   // значение типовых событий
-  //public $onClick = "";
   
   // атрибуты для всех тэгов
-  //protected $type = "";   // type (input)
   protected $text = "";   // некое текстовое содержимое
+  protected $title = "";   // всплывающее текстовое содержимое
 
   // get || set
   public function getText() { return $this->text; }
+  public function getTitle() { return $this->title; }
   
   // абстрактные методы определены
   public function getProps() { return ""; }
-  public function itemsOut() { return $this->text; }
+  public function itemsOut() {
+    return (($this->text == "") ?"": $this->text."\n"); 
+  }
   
     
   //public function setType($type) { $this->type = $type; }
   public function setText($text) { $this->text = $text; }
+  public function setTitle($title) { $this->title = $title; }
 
   // конструктор
   public function __construct ($name = null, $owner = null) {
@@ -169,11 +163,14 @@ class Element extends Primitive {
   }
   
   public function write() {
+    if($this->tag == "") return $this->text;    
+    
     $atr = "";
     $atr .= ($this->getID() == "") ?"" : " id='{$this->getID()}'";
-    $atr .= ($this->getName() == "") ?"" : " id='{$this->getName()}'";
+    $atr .= ($this->getName() == "") ?"" : " name='{$this->getName()}'";
     $atr .= ($this->getStyle() == "") ?"" : " style='{$this->getStyle()}'";
     $atr .= ($this->getClass() == "") ?"" : " style='{$this->getClass()}'";
+    $atr .= ($this->getTitle() == "") ?"" : " title='{$this->getTitle()}'";
     $atr .= $this->getProps();
 
     $atr .= ($this->onBlur == "") ?"" : " onBlur='{$this->onBlur}'";
@@ -183,11 +180,11 @@ class Element extends Primitive {
     $atr .= ($this->onClick == "") ?"" : " onClick='{$this->onClick}'";
     
     if($this->doubleTag === Cons::YES)
-      return "<{$this->tag}{$atr}>" . $this->itemsOut() . "</{$this->tag}>";
+      return "<{$this->tag}{$atr}>\n" . $this->itemsOut() . "</{$this->tag}>";
     else
       return ("<{$this->tag}{$atr}" . "/>");
   }
-  //public function writeln() { return $this->write().nl(); }
+  
   public function writeln() { return $this->write() . "\n"; }
 }
 ?>

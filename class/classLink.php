@@ -1,57 +1,60 @@
 <?php  require_once("classBase.php"); ?>
 <?php
 /* <!--   элемент A ссылка --> */
-class Link extends Control {
+class Link extends Element {
   // личные свойства поля загрузки файлов
-  protected $tag = "a";
-  protected $href = "";
-  protected $title = "пояснение ссылки";
+  protected $href;
+  protected $target;
   
-  protected $elements = array();
+  protected $items;
 
-  public function __construct ($name = null, $owner = null) {
+  public function __construct 
+                              ($name = null, $owner = null, 
+                              $href = "сюда ведет ссылка", 
+                              $title = "пояснение к ссылке", 
+                              $items = null) 
+  {
     parent::__construct($name, $owner);
+    $this->tag = "a";
+    
+    $this->href = $href;
+    $this->title = $title;
+    $this->items = $items;
+    $this->target = "new";
   }
 
   // get | set
   public function getHref() { return $this->href; }
-  public function getTitle() { return $this->title; }
-  public function getElements() { return $this->elements; }
+  public function getItems() { return $this->items; }
 
   public function addHref($href) { $this->href = $href; }
-  public function addTitle($title) { $this->title = $title; }  
-  public function setElements($elements) { $this->elements = $elements; }  
+  public function setItems($items) { $this->items = $items; }  
   
-  public function addElement($item) { $this->elements[] = $item; }
+  public function addItem($item) { $this->items[] = $item; }
   
   public function addText($text) { 
-    $this->elements[] = $tn = TextNode::createTextNode(null, $text);
-    $tn->setSpan(Primitive::YES);
-    $tn->setStyle("color:green;");
+    $this->items[] = new TextNode(null, null, $text);
   }
   
+  public function getProps() {
+    $props .= (($this->href == "") ?"" : " href='{$this->href}'");
+    $props .= (($this->target == "") ?"" : " target='{$this->target}'");
 
-  public function write() {
-    $tag = "<{$this->tag}";
-    $tag .=($this->id != "") ?" id='$this->id'" :"";
-    $tag .=($this->href != "") ?" href='$this->href'" :"";
-    $tag .=($this->name != "") ?" name='$this->name'" :"";
-    $tag .=($this->title != "") ?" title='$this->title'" :"";
-    $tag .=($this->css != "") ?" style='$this->css'" :"";
-    $tag .=($this->cls != "") ?" class='$this->cls'" :"";
-    $tag .= ">\n";
-    
-    $elements = writeControls($this->elements);
-    
-    return ($tag . $elements . "</{$this->tag}>");  
+    return $props;
   }
-  
-  public function writeln() { return $this->write() . "\n"; }
+
+  public function itemsOut() { 
+    return (($this->items !== null) ?(writeControls($this->items)) :"");
+  }
+
     
-  static public function createLink($name = null, $href = null, $elems = array()){
-    $tmp = new Link($name);
-    $tmp->href = $href;
-    $tmp->setElements($elems);
+  static public function createLink
+                                ($name = null, $owner = null, 
+                              $href = "сюда ведет ссылка", 
+                              $title = "пояснение к ссылке", 
+                              $items = null) 
+  {
+    $tmp = new Link($name, $owner, $href, $title, $items);
     return $tmp;
   }
 }

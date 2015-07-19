@@ -1,46 +1,49 @@
 <?php  require_once("classBase.php"); ?>
 <?php
 /* <!--  элемент ФОРМА             --> */
-class Form extends Control {
+class Form extends Element {
   // личные свойства поля загрузки файлов    
-  protected $action = "";
-  protected $target = "";
-  protected $controls = array();
+  protected $action;
+  protected $target;
+  protected $items;
 
-  public function __construct ($name = "MyName", $owner = null) {
+  public function __construct ($name = null, $owner = null, $action = null, 
+                               $target = null, $items = null) 
+  {
     parent::__construct($name, $owner);
+    $this->action = $action;
+    $this->target = $target;
+    $this->items  = $items;
+    
+    $this->tag = "form";
   }
   // get | set
   public function getAction() { return $this->action; }
   public function getTarget() { return $this->target; }
-  public function getControls() { return $this->controls; }
+  public function getItems()  { return $this->items;  }
   
   public function setAction($action) { $this->action = $action; }
   public function setTarget($target) { $this->target = $target; }
-  public function setControls($controls) { $this->controls = $controls; }
-  public function addControl($item) {
-    $this->controls[] = $item;
-    //print_r($this->controls);
+  public function setItems($items){ $this->items = $items;   }
+  public function addItem($item)  { $this->items[] = $item;  }
+  
+  // добавленные свойства
+  public function getProps() {
+    $props  = (($this->action == "") ?"" : " action='{$this->action}'");
+    $props .= (($this->target == "") ?"" : " target='{$this->target}'");
+
+    return $props;
   }
   
-  public function write() {
-    $strout = "<form id='$this->id' name='$this->name'";
-    $strout .= ($this->action !== "")? " action='$this->action'" : "";
-    $strout .= ($this->target !== "")? " target='$this->target'" : "";
-    $strout .= " >\n";
-    $tmp = writeControls($this->controls);
-    $strout .= $tmp;
-    return $strout . "</form>";
-    //$tmp = print_r($this->controls);
-    //$tmp = "{ЗАГЛУШКА}";
+  public function itemsOut() { 
+    return (($this->items !== null) ?(writeControls($this->items)) :"");
   }
-  public function writeln() { return $this->write() . "\n"; }
-    
-  static public function createForm($name, $controls = array()){
-    $tmp = new Form($name);
-    $tmp->setControls($controls);
+  
+  static public function createForm ($name = null, $owner = null, 
+                   $action = null, $target = null, $items = null)  
+  {  
+    $tmp = new Form($name, $owner, $action, $target, $items);
     return $tmp;
   }
 }
 ?>
-

@@ -1,36 +1,42 @@
 <?php  require_once("classBase.php"); ?>
 <?php
 /* <!--  под-элемент table->tr->TD --> */
-class TableDataHeader extends Control {
+class TableDataHeader extends Element {
   // личные свойства поля загрузки файлов
-  protected $tag = "th";
-  protected $text = "";
 
-  public function __construct ($name = null, $owner = null) {
+  public function __construct ($name = null, $owner = null, $text = null) 
+  {
     parent::__construct($name, $owner);	
+    
+    $this->tag = "th";
+    $this->text = $text;
   }
 
   // get | set
-  public function getText() { return $this->text; }
-
-  public function setText($text) { $this->text = $text; }
   
   public function write() {
-    $tag = "<{$this->tag}";
-    $tag .=($this->id != "") ?" id='$this->id'" :"";
-    $tag .=($this->name != "") ?" name='$this->name'" :"";
-    $tag .=($this->css != "") ?" style='$this->css'" :"";
-    $tag .=($this->cls != "") ?" class='$this->cls'" :"";
-    $tag .= ">";
+    $atr = "";
+    $atr .= ($this->getID() == "") ?"" : " id='{$this->getID()}'";
+    $atr .= ($this->getName() == "") ?"" : " name='{$this->getName()}'";
+    $atr .= ($this->getStyle() == "") ?"" : " style='{$this->getStyle()}'";
+    $atr .= ($this->getClass() == "") ?"" : " style='{$this->getClass()}'";
+    $atr .= ($this->getTitle() == "") ?"" : " title='{$this->getTitle()}'";
+    $atr .= $this->getProps();
+
+    $atr .= ($this->onBlur == "") ?"" : " onBlur='{$this->onBlur}'";
+    $atr .= ($this->onChange == "") ?"" : " onChange='{$this->onChange}'";
+    $atr .= ($this->onFocus == "") ?"" : " onFocus='{$this->onFocus}'";
+    $atr .= ($this->onSelect == "") ?"" : " onSelect='{$this->onSelect}'";
+    $atr .= ($this->onClick == "") ?"" : " onClick='{$this->onClick}'";
     
-    return ($tag . $this->text . "</{$this->tag}>");  
+    return ("<{$this->tag}{$atr}>{$this->text}</{$this->tag}>");
+
   }
   
-  public function writeln() { return $this->write() . "\n"; }
-    
-  static public function createTableDataHeader($name = null, $text = ""){
-    $tmp = new TableDataHeader($name);
-    $tmp->setText($text);
+  static public function createTableDataHeader
+                      ($name = null, $owner = null, $text = null)   
+  {
+    $tmp = new TableDataHeader($name, $owner, $text);
     return $tmp;
   }
 }

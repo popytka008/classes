@@ -1,43 +1,49 @@
 <?php  require_once("classBase.php"); ?>
 <?php
 /* <!--  картинка IMAGE --> */
-class Image extends Control {
+class Image extends Element {
   // личные свойства текстового поля  
-  protected $tag = "img";
-  protected $src = "здесь будет адрес рисунка";
-  protected $alt = "здесь будет текст вместо рисунка";
-  protected $title = "здесь будет комментарий о рисунке";
+  protected $src;
+  protected $alt;
 
-  public function __construct ($name = null, $owner = null) {
+  public function __construct 
+                          ($name = null, $owner = null, 
+                          $src = "здесь будет адрес рисунка", 
+                          $alt = "текст вместо рисунка", 
+                          $title = "комментарий о рисунке") 
+  {
     parent::__construct($name, $owner);
+    $this->tag = "img";
+    $this->doubleTag = Cons::NO;
+    
+    $this->title = $title;
+    $this->alt   = $alt;
+    $this->src   = $src;
   }
 
   // get | set
   public function getAlt() { return $this->alt; }
   public function getSrc() { return $this->src; }
-  public function getTitle() { return $this->title; }
 
   public function setSrc($src) { $this->src = $src; }
   public function setAlt($alt) { $this->alt = $alt; }
-  public function setTitle($title) { $this->title = $title; }
-    
-  public function write($strout="") {
-    $strout = "<{$this->tag} name='$this->name' src='$this->src' alt='$this->alt' title='$this->title'";
-    $strout .= ($this->onFocus !== "onFocus=")? ' '.$this->onFocus : "";
-    $strout .= ($this->onBlur !== "onBlur=")? ' '.$this->onBlur : "";
-    $strout .= ($this->onSelect !== "onSelect=")? ' '.$this->onSelect : "";
-    $strout .= ($this->onChange !== "onChange=")? ' '.$this->onChange : "";
-    $strout .= ($this->onClick !== "onClick=")? ' '.$this->onClick : "";
-        
-    return ($strout . " />");
+
+  public function getProps() {
+    $props = parent::getProps();
+    $props .= (($this->src == "") ?"" : " src='{$this->src}'");
+    $props .= (($this->alt == "") ?"" : " alt='{$this->alt}'");
+
+    return $props;
   }
-  public function writeln() { return $this->write() . "\n"; }
+
     
-  static public function createImage($name, $src = "", $alt = "", $title = ""){
-    $tmp = new Image($name);
-    if($src != "") $tmp->setSrc($src);
-    if($alt != "") $tmp->setAlt($alt);
-    if($title != "") $tmp->setTitle($title);
+  static public function createImage
+  ($name = null, $owner = null, 
+                          $src = "здесь будет адрес рисунка", 
+                          $alt = "текст вместо рисунка", 
+                          $title = "комментарий о рисунке") 
+  {
+    $tmp = new Image($name, $owner, $src, $alt, $title);
     return $tmp;
   }
 }

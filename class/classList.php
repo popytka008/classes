@@ -1,45 +1,36 @@
 <?php  require_once("classBase.php"); ?>
 <?php
 /* <!--  класс элементов списка {ol/ul}->LI --> */
-class ListItem extends Control {
-  protected $elements = array();
-  protected $tag = "li";
+class ListItem extends Element {
+  protected $items;
     
-  public function __construct ($name = null, $owner = null) {
+  public function __construct 
+                  ($name = null, $owner = null, $items = null) 
+  {
       parent::__construct($name, $owner);
+      $this->tag = "li";
+      $this->items = $items;
   }
 
   // get | set
-  public function getElements() { return $this->elements; }
+  public function getItems() { return $this->items; }
 
-  public function setElements($elements) { $this->elements = $elements; }
+  public function setItem($item) { $this->items = $item; }  
   
-  public function addElement($item) { $this->elements[] = $item; }
+  public function addItem($item) { $this->items[] = $item; }
   
   public function addText($text) { 
-    $this->elements[] = $tn = TextNode::createTextNode(null, $text);
-    //$tn->setSpan(Primitive::YES);
-    //$tn->setStyle("color:green;");
+    $this->items[] = new TextNode(null, null, $text);
   }
   
-  public function write() {
-    $tag = "<{$this->tag}";
-    $tag .=($this->id != "") ?" id='$this->id'" :"";
-    $tag .=($this->name != "") ?" name='$this->name'" :"";
-    $tag .=($this->css != "") ?" style='$this->css'" :"";
-    $tag .=($this->cls != "") ?" class='$this->cls'" :"";
-    $tag .= ">\n";
-    
-    $elements = writeControls($this->elements);
-    
-    return ($tag . $elements . "</{$this->tag}>");
+  public function itemsOut() { 
+    return (($this->items !== null) ?(writeControls($this->items)) :"");
   }
-  
-  public function writeln() { return $this->write() . "\n"; }
 
-  static public function createListItem($name, $elements) {
-    $tmp = new ListItem($name);
-    $tmp->elements = $elements;
+  static public function createListItem
+                    ($name = null, $owner = null, $items = null) 
+  {
+    $tmp = new ListItem($name, $owner, $items);
     return $tmp;
   }
 }
@@ -47,45 +38,46 @@ class ListItem extends Control {
  
 <?php
 /* <!--  класс элементов списка {OL/UL}  --> */
-class OrderList extends Control {
+class OrderList extends Element {
   // личные свойства текстового поля
-  protected $order = Primitive::NO;   // тип списка (упорядоченый/неупорядоченый)
-  protected $items = array(); // массив - элементы списка
-  protected $tag = "";
+  protected $order;     // тип списка (упорядоченый/неупорядоченый)
+  protected $listItems; // массив - элементы списка
+//  protected $tag = "";
   
-  public function __construct ($name = null, $owner = null) {
+  public function __construct 
+                ($name = null, $owner = null, 
+                $order = Cons::YES, 
+                $listItems = null) 
+  {
     parent::__construct($name, $owner);    
+    
+    $this->order = $order;
+    $this->listItems = $listItems;
+    $this->tag = (($order === Cons::YES) ?"ol" :"ul");
   }
 
   // get | set
-  public function getItems() { return $this->items; } // массив объектов Option
-  public function getOrder() { return $this->order; } // значение поля size
+  public function getOrder() { return $this->order; } 
+  public function getListItems() { return $this->listItems; } 
 
-  public function setItems( $items) { $this->items = $items; }
-  public function setOrder($order) { $this->order = $order; }
-  
-  public function addItem($item) { $this->items[] = $item; }
-  
-  
-  public function write() {
-    $this->tag = ($this->order === Primitive::NO) ?"ul" : "ol";
-    $tag = "<{$this->tag}";
-    $tag .=($this->id != "") ?" id='$this->id'" :"";
-    $tag .=($this->name != "") ?" name='$this->name'" :"";
-    $tag .=($this->css != "") ?" style='$this->css'" :"";
-    $tag .=($this->cls != "") ?" class='$this->cls'" :"";
-    $tag .= ">\n";
-    
-    $items = writeControls($this->items);
-    
-    return ($tag . $items . "</{$this->tag}>");
+  public function setOrder($order = Cons::YES) { 
+    $this->order = $order; 
+    $this->tag = (($order === Cons::YES) ?"ol" :"ul");
   }
+  public function setListItems( $listItems) { $this->listItems = $listItems; }
   
-  public function writeln() { return $this->write() . "\n"; }
+  public function addListItem($listItem) { $this->listItems[] = $listItem; }
   
-  static public function createOrderList($name, $items = array()) {
-    $tmp = new OrderList($name);
-    $tmp->setItems($items);
+  public function itemsOut() { 
+    return (($this->listItems !== null) ?(writeControls($this->listItems)) :"");
+  }
+
+  static public function createOrderList
+                ($name = null, $owner = null, 
+                $order = Cons::YES, 
+                $listItems = null) 
+  {
+    $tmp = new OrderList($name, $owner, $order, $listItems);
     return $tmp;
   }
 }
